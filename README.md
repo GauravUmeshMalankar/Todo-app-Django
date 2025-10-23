@@ -22,11 +22,11 @@ You can add, complete, and delete tasks with a clean UI and popup success messag
 5. python manage.py runserver
 
 ## Preview
-![TO DO List Screenshoot](TODO_APP/Media/first_image.png)
+![TO DO List Screenshoot](Media/first_image.png)
 
-![TO DO List Screenshoot](TODO_APP/Media/second_image.png)
+![TO DO List Screenshoot](Media/second_image.png)
 
-![TO DO List Screenshoot](TODO_APP/Media/thrid_image.png)
+![TO DO List Screenshoot](Media/task_add.png)
 
 
   
