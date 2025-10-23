@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My To-Do List</title>
+    <style>
+        /* Background + layout */
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #74b9ff, #a29bfe);
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 60px 0;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        /* Main container */
+        .container {
+            width: 400px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 25px;
+            border-radius: 16px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            box-sizing: border-box;
+            backdrop-filter: blur(6px);
+        }
+
+        h1 {
+            text-align: center;
+            color: #2d3436;
+            margin-bottom: 25px;
+        }
+
+        /* Add button */
+        .add-btn {
+            display: block;
+         
+            padding: 12px;
+            background-color: #00b894;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            text-align: center;
+            font-weight: bold;
+            text-decoration: none;
+            transition: background 0.3s;
+        }
+        .add-btn:hover {
+            background-color: #019875;
+        }
+
+        /* Task list */
+        ul {
+            list-style: none;
+            padding: 0;
+            margin-top: 20px;
+        }
+        li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            margin-bottom: 10px;
+            background-color: #f1f2f6;
+            border-radius: 8px;
+            transition: transform 0.2s, background 0.2s;
+        }
+        li:hover {
+            background-color: #dfe6e9;
+            transform: translateY(-2px);
+        }
+        li strike {
+            color: #636e72;
+        }
+
+        /* Links */
+        a {
+            text-decoration: none;
+            color: #0984e3;
+            font-weight: 500;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .buttons a {
+            margin-left: 10px;
+        }
+
+        #popup-message {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 9999;
+        }
+        .popup {
+            background: #4CAF50;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            font-weight: bold;
+            text-align: center;
+        
+        }
+        .popup.success { background: #28a745; }
+        .popup.warning { background: #ffc107; color: #222; }
+        .popup.error { background: #dc3545; }
+    </style>
+</head>
+<body>
+    {% if messages %}
+    <div id="popup-message">
+        {% for message in messages %}
+            <div class="popup {{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+    </div>
+    <script>
+        // Auto-hide message after 3 seconds
+        setTimeout(() => {
+            const popup = document.getElementById("popup-message");
+            if (popup) popup.style.display = "none";
+        }, 8000);
+    </script>
+    {% endif %}
+
+    <div class="container">
+        <h1>My Tasks</h1>
+        <a class="add-btn" href="{% url 'add_task' %}">+ Add New Task</a>
+        <ul>
+            {% for task in tasks %}
+                <li>
+                    <span>
+                        {% if task.completed %}
+                            <strike>{{ task.title }}</strike>
+                        {% else %}
+                            {{ task.title }}
+                        {% endif %}
+                    </span>
+                    <div class="buttons">
+                        {% if not task.completed %}
+                            <a href="{% url 'complete_task' task.id %}">Complete</a>
+                        {% endif %}
+                        <a href="{% url 'delete_task' task.id %}">Delete</a>
+                    </div>
+                </li>
+            {% empty %}
+                <li>No tasks yet!</li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>

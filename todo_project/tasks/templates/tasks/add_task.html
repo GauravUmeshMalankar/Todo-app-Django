@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Task</title>
+    <style>
+        /* Background + layout */
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #74b9ff, #a29bfe);
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 60px 0;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        /* Main card */
+        .container {
+            width: 400px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 25px;
+            border-radius: 16px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            box-sizing: border-box;
+            backdrop-filter: blur(6px);
+        }
+
+        h1 {
+            text-align: center;
+            color: #2d3436;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            font-weight: bold;
+            color: #2d3436;
+        }
+
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border-radius: 8px;
+            box-sizing: border-box;
+    
+        }
+
+        .buttons {
+            margin-top: 25px;
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        button, a.btn {
+            flex: 1;
+            text-align: center;
+            padding: 12px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+
+        .add-btn {
+            background-color: #00b894;
+        }
+        .add-btn:hover {
+            background-color: #019875;
+        }
+
+        .cancel-btn {
+            background-color: #d63031;
+        }
+        .cancel-btn:hover {
+            background-color: #c0392b;
+        }
+        #popup-message {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 9999;
+        }
+        .popup {
+            background: #4CAF50;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            font-weight: bold;
+            text-align: center;
+        
+        }
+        .popup.success { background: #28a745; }
+        .popup.warning { background: #ffc107; color: #222; }
+        .popup.error { background: #dc3545; }
+    </style>
+</head>
+<body>
+    {% if messages %}
+    <div id="popup-message">
+        {% for message in messages %}
+            <div class="popup {{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+    </div>
+    <script>
+        // Auto-hide message after 3 seconds
+        setTimeout(() => {
+            const popup = document.getElementById("popup-message");
+            if (popup) popup.style.display = "none";
+        }, 8000);
+    </script>
+    {% endif %}
+
+    <div class="container">
+        <h1>Add New Task</h1>
+        <form method="POST">
+            {% csrf_token %}
+            <label>Title:</label>
+            <input type="text" name="title" required>
+
+            <label>Description:</label>
+            <textarea name="description" rows="4"></textarea>
+
+            <div class="buttons">
+                <button type="submit" class="add-btn">Add Task</button>
+                <a href="{% url 'task_list' %}" class="btn cancel-btn">Cancel</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
